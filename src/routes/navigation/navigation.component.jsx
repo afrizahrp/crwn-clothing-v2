@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import { ReactComponent as Nsolutionslogo } from "../../assets/nsolutions-modern3colors-logo-xs.svg";
+import { ReactComponent as Nsolutionslogo } from "../../assets/nsolutions-modern2colors2-logo-xs.svg";
 import "./navigation.styles.scss";
 const Navigation = () => {
   return (
