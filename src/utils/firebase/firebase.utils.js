@@ -16,8 +16,6 @@ import {
   setDoc,
   collection,
   writeBatch,
-  query,
-  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -28,18 +26,6 @@ const firebaseConfig = {
   messagingSenderId: "399530714183",
   appId: "1:399530714183:web:019fddb4dc0fee807fbd62",
 };
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB3HpFOKXL3klWppYjfdlncOCVsPZbEwpQ",
-//   authDomain: "crwn-clothing-db-7f3a8.firebaseapp.com",
-//   projectId: "crwn-clothing-db-7f3a8",
-//   storageBucket: "crwn-clothing-db-7f3a8.appspot.com",s
-//   messagingSenderId: "399530714183",
-//   appId: "1:399530714183:web:019fddb4dc0fee807fbd62",
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -59,33 +45,17 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd,
-  field
+  objectsToAdd
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
 
-  objectsToAdd.forEach((object) => {
-    const docRef = doc(collectionRef, object.title.toLowerCase());
-    batch.set(docRef, object);
+  objectsToAdd.forEach((obj) => {
+    const docRef = doc(collectionRef, obj.title.tolowerCase());
+    batch.set(docRef, obj);
   });
-
   await batch.commit();
-  console.log("done");
-};
-
-export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, "categories");
-  const q = query(collectionRef);
-
-  const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
-  return categoryMap;
+  console.log("Batch committed");
 };
 
 export const createUserDocumentFromAuth = async (
